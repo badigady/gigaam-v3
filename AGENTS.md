@@ -35,6 +35,10 @@ uv pip install --python .venv -e .
 
 # сервер
 .venv/bin/gigaam-server --port 8000
+
+# автозапуск (см. README): systemd/gigaam@.service, URL репо в GIGAAM_REPO
+sudo cp systemd/gigaam@.service /etc/systemd/system/
+sudo systemctl enable --now gigaam@8000
 ```
 
 Проверка без установки: `uvx --from . gigaam <audio>`.

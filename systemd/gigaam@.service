@@ -1,0 +1,19 @@
+[Unit]
+Description=GigaAM v3 Russian ASR server (port %i)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# URL вашего GitHub-репозитория с этим пакетом (uvx сам соберёт и установит его).
+Environment=GIGAAM_REPO=git+https://github.com/badigady/gigaam-v3
+# Сюда uvx скачает MODEL files при первом запуске (каталог создаётся сам).
+Environment=GIGAAM_MODELS_DIR=/var/lib/gigaam/models
+ExecStart=/snap/bin/uvx --from ${GIGAAM_REPO} gigaam-server --host 127.0.0.1 --port %i
+Restart=on-failure
+RestartSec=5
+# Первый запуск долгий: uvx ставит пакет, потом качается модель (~885 МБ).
+TimeoutStartSec=infinity
+
+[Install]
+WantedBy=multi-user.target

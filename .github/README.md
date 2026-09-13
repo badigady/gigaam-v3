@@ -14,8 +14,8 @@
 # локально, из каталога проекта:
 uvx --from . gigaam speech.wav
 
-# из GitHub (после публикации репозитория):
-uvx --from git+https://github.com/USER/REPO gigaam speech.wav
+# из GitHub:
+uvx --from git+https://github.com/badigady/gigaam-v3 gigaam speech.wav
 ```
 
 ### Про модель
@@ -75,6 +75,35 @@ uvx --from . gigaam-server        # http://127.0.0.1:8000
 
 После правки полностью перезапустите Vocalinux (выйти из трея). То же можно
 настроить в GUI: Settings → Speech recognition → Remote API.
+
+## Автостарт через systemd
+
+В репозитории есть юнит-шаблон `systemd/gigaam@.service`: порт берётся из имени
+инстанса. Юнит сам соберёт пакет с GitHub через `uvx`, скачает модель и поднимет
+сервер без ручных шагов:
+
+```bash
+sudo cp systemd/gigaam@.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now gigaam@8000      # сервер на порту 8000
+```
+
+Первый запуск долгий (uvx ставит пакет и зависимости, затем качается модель
+~885 МБ), модель сохраняется один раз в `/var/lib/gigaam/models`.
+Следить за ходом:
+
+```bash
+journalctl -u gigaam@8000 -f
+```
+
+Перед активацией проверьте URL репозитория в `Environment=GIGAAM_REPO`
+(/etc/systemd/system/gigaam@.service) — он должен указывать на опубликованный
+репозиторий с этим пакетом (инстанс `gigaam@PORT` стартует с портом PORT).
+
+```bash
+sudo systemctl edit gigaam@8000              # переопределить параметры
+sudo systemctl restart gigaam@8000
+```
 
 ## Производительность
 
