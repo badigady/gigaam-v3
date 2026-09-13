@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "gigaam-v3"
 version = "0.1.0"
 description = "GigaAM v3 (e2e-RNNT) Russian speech recognition over ONNX Runtime"
-readme = "README.md"
+readme = ".github/README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "anton" }]
