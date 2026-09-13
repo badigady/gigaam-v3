@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gigaam-v3"
+version = "0.1.0"
+description = "GigaAM v3 (e2e-RNNT) Russian speech recognition over ONNX Runtime"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "anton" }]
+keywords = ["asr", "speech", "russian", "gigaam", "onnx"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+dependencies = [
+  "numpy",
+  "onnxruntime",
+  "fastapi",
+  "uvicorn",
+  "python-multipart",
+]
+
+[project.scripts]
+gigaam = "gigaam.cli:main"
+gigaam-server = "gigaam.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gigaam"]
